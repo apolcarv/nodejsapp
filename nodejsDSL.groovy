@@ -4,20 +4,18 @@ job('Aplicacion2 Node.js DSL') {
     git('https://github.com/apolcarv/nodejsapp.git','main') { node ->
       node / gitConfigName('apolcarv1')
       node / gitConfigEmail('alejandropolocarvajal@gmail.com')
+   }
     }
-  }
-  parameters {
-      stringParam('nombre', defaultValue = 'Alejandro', description = 'Parametro de cadena para el job Booleano')
-      choiceParam('planeta', ['Mercurio','venus','tierra','martes','jupiter','saturno','urano','neptuno'])
-  	  booleanParam('agente', false)	
-  }
-  triggers {
-      cron('H/7 * * * *')
-  }
-  steps {
-     shell("npm install")
-  }
-  publishers {
+    triggers {
+        scm('H/7 * * * *')
+    }
+    wrappers {
+        nodejs('nodejs')
+    }
+    steps {
+        shell("npm install")
+    }
+    publishers {
       mailer('alejandropolocarvajal@gmail.com', true, true)
   }  
 }
