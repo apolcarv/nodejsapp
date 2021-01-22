@@ -1,21 +1,23 @@
-job('Aplicacion Node.js DSL') {
-    description('Aplicación Node JS DSL para el curso de Jenkins')
-    scm {
-        git('https://github.com/macloujulian/nodejsapp.git', 'master') { node ->
-            node / gitConfigName('macloujulian')
-            node / gitConfigEmail('macloujulian@gmail.com')
-        }
+job('ejemplo-job-DSL') {
+  	description('Job DSL de ejemplo para el curso de Jenkins')
+  scm {
+    git('https://github.com/macloujulian/jenkins.job.parametrizado.git','main') { node ->
+      node / gitConfigName('apolcarv1')
+      node / gitConfigEmail('alejandropolocarvajal@gmail.com')
     }
-    triggers {
-        scm('H/7 * * * *')
-    }
-    wrappers {
-        nodejs('nodejs')
-    }
-    steps {
-        shell("npm install")
-    }
-    publishers {
+  }
+  parameters {
+      stringParam('nombre', defaultValue = 'Alejandro', description = 'Parametro de cadena para el job Booleano')
+      choiceParam('planeta', ['Mercurio','venus','tierra','martes','jupiter','saturno','urano','neptuno'])
+  	  booleanParam('agente', false)	
+  }
+  triggers {
+      cron('H/7 * * * *')
+  }
+  steps {
+     shell("npm install")
+  }
+  publishers {
       mailer('alejandropolocarvajal@gmail.com', true, true)
   }  
 }
